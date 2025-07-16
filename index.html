@@ -6,11 +6,11 @@
     <title>Indian Tax Calculator (Old vs. New Regime)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chosen Palette: Professional Blue & Soft Neutrals -->
-    <!-- Application Structure Plan: A responsive two-column layout is used. The left column contains all user inputs, grouped into collapsible accordions for clarity. The right column is dedicated to the output, showing a detailed side-by-side comparison table and a summary recommendation. This structure separates data entry from results, providing immediate, real-time feedback and a clear, uncluttered user flow. -->
+    <!-- Application Structure Plan: A responsive two-column layout. The left column contains user inputs in accordions, and the right shows the detailed comparison table. A footer adds a generic copyright. This structure clearly separates data entry from results for a professional user experience. -->
     <!-- Visualization & Content Choices: 1. Input Grouping: Report Info (5 Heads of Income, Deductions) -> Goal (Organize) -> Presentation (Collapsible Accordions with conditional inputs for HP & PGBP) -> Interaction (Click to expand/collapse, select to show/hide fields, auto-expand on selection) -> Justification (Keeps the UI clean while allowing for detailed, accurate data entry and improving workflow) -> Library/Method (HTML/JS). 2. Detailed Comparison: Report Info (Full tax computation) -> Goal (Compare) -> Presentation (HTML Table with expandable rows for all composite heads, deductions, and tax calculation) -> Interaction (Real-time updates, click to see breakup) -> Justification (Provides complete transparency and consistency, allowing users to verify all calculations) -> Library/Method (HTML/JS). -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f7f9fc; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fc; color: #1e2937; }
         .accordion-content { transition: max-height 0.3s ease-out; }
         .toggle-row { cursor: pointer; }
         .breakup-row { background-color: #fcfdff; }
@@ -48,12 +48,12 @@
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-<body class="bg-gray-50 text-slate-800 p-4 sm:p-6 lg:p-8">
+<body class="bg-gray-50 p-4 sm:p-6 lg:p-8">
 
     <div class="main-container mx-auto">
         <header class="text-center mb-10">
             <h1 class="text-3xl lg:text-4xl font-bold text-slate-900">Tax Regime Comparison Tool</h1>
-            <p class="text-slate-600 mt-2 text-lg">Analyse your tax liability under the Old and New Regimes for AY 2025-26.</p>
+            <p class="text-slate-600 mt-2 text-lg">Analyse your tax liability for AY 2025-26.</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -62,7 +62,7 @@
                 <form id="tax-form">
                     <!-- Section A: Basic Info -->
                     <div class="mb-6">
-                        <h2 class="text-xl font-semibold mb-4 text-slate-900 border-b border-slate-200 pb-3">Basic Information</h2>
+                        <h3 class="text-xl font-semibold mb-4 text-slate-900 border-b border-slate-200 pb-3">Basic Information</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                             <div>
                                 <label for="assessmentYear" class="block text-sm font-medium text-slate-700 mb-1">Assessment Year</label>
@@ -378,6 +378,10 @@
                  </div>
             </div>
         </main>
+        
+        <footer class="no-print text-center mt-12 text-sm text-slate-500">
+            <p>&copy; 2024 Tax Comparison Tool. All Rights Reserved.</p>
+        </footer>
     </div>
 
 <script>
