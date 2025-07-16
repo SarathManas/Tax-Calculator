@@ -18,8 +18,6 @@
         .main-container { max-width: 80rem; }
         .card { background-color: #ffffff; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); }
         .accordion-header { border-radius: 0.5rem; transition: background-color 0.2s ease; }
-        .accordion-icon { transition: transform 0.3s ease; }
-        .accordion-header[aria-expanded="true"] .accordion-icon { transform: rotate(45deg); }
         .btn { padding: 0.6rem 1.25rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.2s ease; }
         .btn-primary { background-color: #2563eb; color: white; }
         .btn-primary:hover { background-color: #1d4ed8; box-shadow: 0 2px 8px -1px rgb(37 99 235 / 0.4); }
@@ -96,7 +94,7 @@
                                     <div>
                                         <label for="grossSalary" class="block text-sm font-medium text-slate-700 mb-1">Gross Salary</label>
                                         <input type="text" id="grossSalary" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="e.g., 10,00,000">
-                                        <p class="text-xs text-slate-500 mt-1">Standard Deduction of ₹75,000 auto-applied.</p>
+                                        <p class="text-xs text-slate-500 mt-1">Standard Deduction is auto-applied (₹50k for Old, ₹75k for New).</p>
                                     </div>
                                     <div>
                                         <label for="hraExemption" class="block text-sm font-medium text-slate-700 mb-1">HRA Exemption (Old Regime Only)</label>
@@ -105,6 +103,10 @@
                                     <div>
                                         <label for="ltaExemption" class="block text-sm font-medium text-slate-700 mb-1">LTA Exemption (Old Regime Only)</label>
                                         <input type="text" id="ltaExemption" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0">
+                                    </div>
+                                    <div>
+                                        <label for="otherAllowances" class="block text-sm font-medium text-slate-700 mb-1">Other Exemptions</label>
+                                        <input type="text" id="otherAllowances" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0">
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +129,7 @@
                                     </div>
                                     <div id="hp-self-occupied-inputs" class="conditional-input hidden space-y-4">
                                         <div>
-                                            <label for="hpInterestSelfOccupied" class="block text-sm font-medium text-slate-700 mb-1">Interest on Housing Loan</label>
+                                            <label for="hpInterestSelfOccupied" class="block text-sm font-medium text-slate-700 mb-1">Interest on Housing Loan (Old Regime)</label>
                                             <input type="text" id="hpInterestSelfOccupied" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="Max loss 2,00,000">
                                         </div>
                                     </div>
@@ -222,8 +224,9 @@
                             <div class="accordion-content max-h-0 overflow-hidden bg-white rounded-b-lg">
                                <div class="p-4 pt-2 space-y-4 border-t border-slate-200">
                                      <div><label class="block text-sm font-medium text-slate-700 mb-1">80C (Max 1,50,000) <span class="text-xs text-red-500 font-medium">(Old Regime)</span></label><input type="text" id="deduction80c" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
-                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">80CCD(1B) (NPS - Max 50,000) <span class="text-xs text-green-600 font-medium">(Both Regimes)</span></label><input type="text" id="deduction80ccd" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
-                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">80D (Medical Insurance) <span class="text-xs text-green-600 font-medium">(Both Regimes)</span></label><input type="text" id="deduction80d" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">80CCD(1B) (NPS - Max 50,000) <span class="text-xs text-red-500 font-medium">(Old Regime)</span></label><input type="text" id="deduction80ccd" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">80CCD(2) (Employer's NPS) <span class="text-xs text-green-600 font-medium">(Both Regimes)</span></label><input type="text" id="deduction80ccd2" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">80D (Medical Insurance) <span class="text-xs text-red-500 font-medium">(Old Regime)</span></label><input type="text" id="deduction80d" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
                                      <div><label class="block text-sm font-medium text-slate-700 mb-1">80E (Education Loan Interest) <span class="text-xs text-red-500 font-medium">(Old Regime)</span></label><input type="text" id="deduction80e" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
                                      <div><label class="block text-sm font-medium text-slate-700 mb-1">80G (Donations) <span class="text-xs text-red-500 font-medium">(Old Regime)</span></label><input type="text" id="deduction80g" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
                                      <p class="text-xs text-slate-500 mt-1">Deduction for 80TTA/80TTB is auto-calculated.</p>
@@ -265,7 +268,7 @@
                             <!-- Salary Breakup -->
                             <tr class="bg-white toggle-row" data-toggle="salary-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>1. Income from Salary</span>
                                 </td>
                                 <td id="old-salary-income" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -275,11 +278,12 @@
                             <tr class="breakup-row salary-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Less: Standard Deduction</td><td id="old-std-deduction" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-std-deduction" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
                             <tr class="breakup-row salary-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Less: HRA Exemption</td><td id="old-hra-exemption" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-hra-exemption" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
                             <tr class="breakup-row salary-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Less: LTA Exemption</td><td id="old-lta-exemption" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-lta-exemption" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="breakup-row salary-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Less: Other Exemptions</td><td id="old-other-allowances" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-other-allowances" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
 
                             <!-- House Property Breakup -->
                             <tr class="bg-white toggle-row" data-toggle="hp-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>2. Income from House Property</span>
                                 </td>
                                 <td id="old-hp-income" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -293,7 +297,7 @@
                             <!-- PGBP Breakup -->
                             <tr class="bg-white toggle-row" data-toggle="pgbp-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>3. PGBP</span>
                                 </td>
                                 <td id="old-pgbp-income" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -305,7 +309,7 @@
                             <!-- Capital Gains Breakup -->
                             <tr class="bg-white toggle-row" data-toggle="cg-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>4. Capital Gains</span>
                                 </td>
                                 <td id="old-cg-income" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -318,7 +322,7 @@
 
                              <tr class="bg-white toggle-row" data-toggle="os-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>5. Income from Other Sources</span>
                                 </td>
                                 <td id="old-os-income" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -332,14 +336,15 @@
                              
                             <tr class="bg-white toggle-row border-b border-slate-200" data-toggle="deductions-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>Less: Deductions (Chap VI-A)</span>
                                 </td>
                                 <td id="old-deductions" class="px-6 py-3 text-right font-mono font-semibold">0</td>
                                 <td id="new-deductions" class="px-6 py-3 text-right font-mono font-semibold">0</td>
                             </tr>
                             <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80C</td><td id="old-ded-80c" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80c" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
-                            <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80CCD(1B)</td><td id="old-ded-80ccd" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80ccd" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80CCD(1B)</td><td id="old-ded-80ccd1b" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80ccd1b" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80CCD(2)</td><td id="old-ded-80ccd2" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80ccd2" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
                             <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80D</td><td id="old-ded-80d" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80d" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
                             <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80E</td><td id="old-ded-80e" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80e" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
                             <tr class="breakup-row deductions-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">80G</td><td id="old-ded-80g" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-ded-80g" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
@@ -350,7 +355,7 @@
                             <tr class="bg-white border-b border-slate-100"><td colspan="3" class="px-6 py-2 font-bold text-slate-800">Tax Calculation</td></tr>
                             <tr class="bg-white toggle-row" data-toggle="tax-breakup">
                                 <td class="px-6 py-3 font-semibold flex items-center">
-                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg transition-transform duration-300">+</span>
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
                                     <span>Income Tax</span>
                                 </td>
                                 <td id="old-tax" class="px-6 py-3 text-right font-mono font-semibold">0</td>
@@ -386,18 +391,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     'super-senior': [ { upto: 500000, rate: 0 }, { upto: 1000000, rate: 0.20 }, { upto: Infinity, rate: 0.30 } ]
                 },
                 rebateLimit: 500000,
+                standardDeduction: 50000,
             },
             newRegime: {
                 slabs: [ { upto: 300000, rate: 0 }, { upto: 600000, rate: 0.05 }, { upto: 900000, rate: 0.10 }, { upto: 1200000, rate: 0.15 }, { upto: 1500000, rate: 0.20 }, { upto: Infinity, rate: 0.30 } ],
                 rebateLimit: 700000,
+                standardDeduction: 75000,
             },
             surcharge: [ { limit: 5000000, rate: 0.10 }, { limit: 10000000, rate: 0.15 }, { limit: 20000000, rate: 0.25 }, { limit: 50000000, rate: 0.37 } ],
             cess: 0.04,
-            standardDeduction: 75000,
         }
     };
 
-    const inputIds = [ 'grossSalary', 'hraExemption', 'ltaExemption', 'hpInterestSelfOccupied', 'hpGrossAnnualValue', 'hpPropertyTax', 'hpInterestLetOut', 'pgbpNetProfit', 'turnoverBank', 'turnoverCash', 'grossReceipts44ada', 'lightVehiclesCount', 'lightVehiclesMonths', 'heavyVehiclesCount', 'heavyVehiclesMonths', 'stcg111a', 'stcgOther', 'ltcg20', 'ltcg112a', 'savingsInterest', 'depositsInterest', 'otherIncome', 'deduction80c', 'deduction80ccd', 'deduction80d', 'deduction80e', 'deduction80g' ];
+    const inputIds = [ 'grossSalary', 'hraExemption', 'ltaExemption', 'otherAllowances', 'hpInterestSelfOccupied', 'hpGrossAnnualValue', 'hpPropertyTax', 'hpInterestLetOut', 'pgbpNetProfit', 'turnoverBank', 'turnoverCash', 'grossReceipts44ada', 'lightVehiclesCount', 'lightVehiclesMonths', 'heavyVehiclesCount', 'heavyVehiclesMonths', 'stcg111a', 'stcgOther', 'ltcg20', 'ltcg112a', 'savingsInterest', 'depositsInterest', 'otherIncome', 'deduction80c', 'deduction80ccd', 'deduction80ccd2', 'deduction80d', 'deduction80e', 'deduction80g' ];
     const selectIds = ['assessmentYear', 'taxpayerCategory', 'hpType', 'presumptiveSection'];
     const checkboxIds = ['isPresumptive'];
 
@@ -441,12 +447,16 @@ document.addEventListener('DOMContentLoaded', function () {
         updateRecommendation(oldResult.totalTax, newResult.totalTax);
     }
 
-    function getHousePropertyIncome(inputs) {
+    function getHousePropertyIncome(inputs, regime) {
         const hpType = document.getElementById('hpType').value;
         let details = { type: hpType, gav: 0, tax: 0, std: 0, interest: 0, final: 0 };
         if (hpType === 'self-occupied') {
             details.interest = inputs.hpInterestSelfOccupied;
-            details.final = -Math.min(details.interest, 200000);
+            if (regime === 'old') {
+                details.final = -Math.min(details.interest, 200000);
+            } else {
+                details.final = 0; // No deduction for self-occupied in new regime
+            }
         } else if (hpType === 'let-out') {
             details.gav = inputs.hpGrossAnnualValue;
             details.tax = inputs.hpPropertyTax;
@@ -483,13 +493,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculateForRegime(regime, inputs, config, category) {
-        const stdDed = inputs.grossSalary > 0 ? config.standardDeduction : 0;
+        const regimeConfig = regime === 'old' ? config.oldRegime : config.newRegime;
+        const stdDed = inputs.grossSalary > 0 ? regimeConfig.standardDeduction : 0;
         const hraEx = regime === 'old' ? inputs.hraExemption : 0;
         const ltaEx = regime === 'old' ? inputs.ltaExemption : 0;
-        let salaryIncome = Math.max(0, inputs.grossSalary - stdDed - hraEx - ltaEx);
-        const salaryDetails = { gross: inputs.grossSalary, stdDed, hraEx, ltaEx, final: salaryIncome };
+        const otherAllowances = inputs.otherAllowances; // Applied to both as per user request
+        let salaryIncome = Math.max(0, inputs.grossSalary - stdDed - hraEx - ltaEx - otherAllowances);
+        const salaryDetails = { gross: inputs.grossSalary, stdDed, hraEx, ltaEx, otherAllowances, final: salaryIncome };
         
-        const hpDetails = getHousePropertyIncome(inputs);
+        const hpDetails = getHousePropertyIncome(inputs, regime);
         const pgbpDetails = getPgbpIncome(inputs);
         
         let cgIncome = inputs.stcg111a + inputs.stcgOther + inputs.ltcg20 + inputs.ltcg112a;
@@ -502,36 +514,39 @@ document.addEventListener('DOMContentLoaded', function () {
         
         let hpLoss = Math.min(0, hpDetails.final);
         let pgbpLoss = Math.min(0, pgbpDetails.final);
-        const hpLossSetOff = Math.max(hpLoss, -200000);
+        
+        const hpLossSetOff = regime === 'old' ? Math.max(hpLoss, -200000) : 0;
+        
         let gti = totalPositiveIncome + hpLossSetOff;
         const pgbpLossSetOff = Math.max(pgbpLoss, -(gti - Math.max(0, salaryIncome)));
         gti += pgbpLossSetOff;
         gti = Math.max(0, gti);
         
-        const deductionDetails = { c80c: 0, c80ccd: 0, c80d: 0, c80e: 0, c80g: 0, c80tta: 0, final: 0 };
+        const deductionDetails = { c80c: 0, c80ccd1b: 0, c80ccd2: 0, c80d: 0, c80e: 0, c80g: 0, c80tta: 0, final: 0 };
         if (regime === 'old') {
             deductionDetails.c80c = Math.min(inputs.deduction80c, 150000);
+            deductionDetails.c80ccd1b = Math.min(inputs.deduction80ccd, 50000);
+            deductionDetails.c80d = inputs.deduction80d;
             deductionDetails.c80e = inputs.deduction80e;
             deductionDetails.c80g = inputs.deduction80g;
             const eightyTTA = (category !== 'senior' && category !== 'super-senior') ? Math.min(inputs.savingsInterest, 10000) : 0;
             const eightyTTB = (category === 'senior' || category === 'super-senior') ? Math.min(inputs.savingsInterest + inputs.depositsInterest, 50000) : 0;
             deductionDetails.c80tta = eightyTTA + eightyTTB;
         }
-        deductionDetails.c80ccd = Math.min(inputs.deduction80ccd, 50000);
-        deductionDetails.c80d = inputs.deduction80d;
+        deductionDetails.c80ccd2 = inputs.deduction80ccd2;
+        
         deductionDetails.final = Object.values(deductionDetails).reduce((a, b) => a + b, 0);
         deductionDetails.final = Math.min(gti, deductionDetails.final);
         
         let nti = gti - deductionDetails.final;
 
-        const regimeConfig = regime === 'old' ? config.oldRegime : config.newRegime;
         if (nti <= regimeConfig.rebateLimit) {
             return { salaryDetails, hpDetails, pgbpDetails, cgDetails, osDetails, gti, deductionDetails, nti, taxDetails: { onNormal: 0, onSpecial: 0, final: 0 }, surcharge: 0, cess: 0, totalTax: 0 };
         }
 
         let taxOnSpecialRates = (inputs.stcg111a * 0.15) + (inputs.ltcg20 * 0.20) + (Math.max(0, inputs.ltcg112a - 100000) * 0.10);
         const normalIncome = nti - inputs.stcg111a - inputs.ltcg20 - inputs.ltcg112a;
-        const slabs = regime === 'old' ? regimeConfig.slabs[category] : regimeConfig.slabs;
+        const slabs = regimeConfig.slabs[category] || regimeConfig.slabs;
         let taxOnNormalIncome = 0, incomeLeft = normalIncome, previousSlabLimit = 0;
 
         for (const slab of slabs) {
@@ -570,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function calculateTaxForSlab(income, regime, config, category) {
         const regimeConfig = regime === 'old' ? config.oldRegime : config.newRegime;
-        const slabs = regime === 'old' ? regimeConfig.slabs[category] : regimeConfig.slabs;
+        const slabs = regimeConfig.slabs[category] || regimeConfig.slabs;
         let tax = 0, incomeLeft = income, prevLimit = 0;
         for (const slab of slabs) {
             const taxable = Math.max(0, Math.min(incomeLeft, slab.upto - prevLimit));
@@ -594,6 +609,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('new-hra-exemption').textContent = formatToRupee(newRes.salaryDetails.hraEx);
         document.getElementById('old-lta-exemption').textContent = formatToRupee(oldRes.salaryDetails.ltaEx);
         document.getElementById('new-lta-exemption').textContent = formatToRupee(newRes.salaryDetails.ltaEx);
+        document.getElementById('old-other-allowances').textContent = formatToRupee(oldRes.salaryDetails.otherAllowances);
+        document.getElementById('new-other-allowances').textContent = formatToRupee(newRes.salaryDetails.otherAllowances);
         
         // House Property
         document.getElementById('old-hp-income').textContent = formatToRupee(oldRes.hpDetails.final);
@@ -648,8 +665,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('new-deductions').textContent = formatToRupee(newRes.deductionDetails.final);
         document.getElementById('old-ded-80c').textContent = formatToRupee(oldRes.deductionDetails.c80c);
         document.getElementById('new-ded-80c').textContent = formatToRupee(newRes.deductionDetails.c80c);
-        document.getElementById('old-ded-80ccd').textContent = formatToRupee(oldRes.deductionDetails.c80ccd);
-        document.getElementById('new-ded-80ccd').textContent = formatToRupee(newRes.deductionDetails.c80ccd);
+        document.getElementById('old-ded-80ccd1b').textContent = formatToRupee(oldRes.deductionDetails.c80ccd1b);
+        document.getElementById('new-ded-80ccd1b').textContent = formatToRupee(newRes.deductionDetails.c80ccd1b);
+        document.getElementById('old-ded-80ccd2').textContent = formatToRupee(oldRes.deductionDetails.c80ccd2);
+        document.getElementById('new-ded-80ccd2').textContent = formatToRupee(newRes.deductionDetails.c80ccd2);
         document.getElementById('old-ded-80d').textContent = formatToRupee(oldRes.deductionDetails.c80d);
         document.getElementById('new-ded-80d').textContent = formatToRupee(newRes.deductionDetails.c80d);
         document.getElementById('old-ded-80e').textContent = formatToRupee(oldRes.deductionDetails.c80e);
@@ -758,7 +777,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.accordion-header').forEach(accordion => {
         accordion.addEventListener('click', () => {
             const content = accordion.nextElementSibling;
-            accordion.setAttribute('aria-expanded', content.style.maxHeight ? 'false' : 'true');
+            const icon = accordion.querySelector('.accordion-icon');
+            const isExpanded = accordion.getAttribute('aria-expanded') === 'true';
+
+            accordion.setAttribute('aria-expanded', !isExpanded);
+            icon.textContent = !isExpanded ? '-' : '+';
+
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
             } else {
@@ -775,8 +799,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll(`.${targetClass}`).forEach(breakupRow => {
                 breakupRow.classList.toggle('hidden');
             });
-            icon.textContent = isOpening ? '−' : '+';
-            icon.style.transform = isOpening ? 'rotate(45deg)' : 'rotate(0deg)';
+            icon.textContent = isOpening ? '-' : '+';
         });
     });
 
