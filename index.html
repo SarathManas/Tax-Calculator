@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Tax Calculator (Old vs. New Regime)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Chosen Palette: Calm Neutrals -->
-    <!-- Application Structure Plan: A responsive two-column layout is used. The left column contains all user inputs, grouped into collapsible accordions for clarity and to prevent overwhelming the user. The right column is dedicated to the output, showing a detailed side-by-side comparison table, a summary recommendation, and a bar chart for quick visual analysis. This structure separates data entry from results, providing immediate, real-time feedback and a clear, uncluttered user flow, which is ideal for a professional tool requiring detailed analysis. -->
-    <!-- Visualization & Content Choices: 1. Input Grouping: Report Info (5 Heads of Income, Deductions) -> Goal (Organize) -> Presentation (Collapsible Accordions) -> Interaction (Click to expand/collapse) -> Justification (Keeps the UI clean and focused) -> Library/Method (HTML/JS). 2. Detailed Comparison: Report Info (Full tax computation) -> Goal (Compare) -> Presentation (HTML Table with expandable rows for detail) -> Interaction (Real-time updates, click to see breakup) -> Justification (Provides both summary and granular detail on demand, enhancing UX for professionals) -> Library/Method (HTML/JS). 3. High-Level Summary: Report Info (Final Tax Liability) -> Goal (Compare Visually) -> Presentation (Bar Chart) -> Interaction (Real-time updates) -> Justification (Offers an immediate, easy-to-digest "answer" to which regime is better) -> Library/Method (Chart.js/Canvas). -->
+    <!-- Application Structure Plan: A responsive two-column layout is used. The left column contains all user inputs, grouped into collapsible accordions for clarity. The right column is dedicated to the output, showing a detailed side-by-side comparison table and a summary recommendation. This structure separates data entry from results, providing immediate, real-time feedback and a clear, uncluttered user flow. -->
+    <!-- Visualization & Content Choices: 1. Input Grouping: Report Info (5 Heads of Income, Deductions) -> Goal (Organize) -> Presentation (Collapsible Accordions) -> Interaction (Click to expand/collapse) -> Justification (Keeps the UI clean) -> Library/Method (HTML/JS). 2. Detailed Comparison: Report Info (Full tax computation) -> Goal (Compare) -> Presentation (HTML Table with expandable rows for detail) -> Interaction (Real-time updates, click to see breakup) -> Justification (Provides both summary and granular detail on demand) -> Library/Method (HTML/JS). -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
@@ -16,7 +15,6 @@
         .tooltip { position: relative; display: inline-block; cursor: pointer; }
         .tooltip .tooltiptext { visibility: hidden; width: 220px; background-color: #1f2937; color: #fff; text-align: center; border-radius: 6px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
         .toggle-row { cursor: pointer; }
         .breakup-row { background-color: #f8fafc; }
         .breakup-row.hidden { display: none; }
@@ -25,7 +23,7 @@
             #print-section, #print-section * { visibility: visible; }
             #print-section { position: absolute; left: 0; top: 0; width: 100%; }
             .no-print { display: none; }
-            .breakup-row { display: table-row !important; } /* Ensure breakup is visible on print */
+            .breakup-row { display: table-row !important; }
         }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
@@ -184,13 +182,6 @@
                      <p id="recommendation-text" class="font-semibold"></p>
                  </div>
 
-                 <!-- Chart -->
-                 <div class="mb-6">
-                     <div class="chart-container">
-                        <canvas id="taxComparisonChart"></canvas>
-                     </div>
-                 </div>
-
                  <!-- Detailed Table -->
                  <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-slate-600">
@@ -282,8 +273,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const inputIds = [ 'grossSalary', 'hraExemption', 'ltaExemption', 'housePropertyIncome', 'pgbpIncome', 'stcg111a', 'stcgOther', 'ltcg20', 'ltcg112a', 'savingsInterest', 'depositsInterest', 'otherIncome', 'deduction80c', 'deduction80ccd', 'deduction80d', 'deduction80e', 'deduction80g' ];
     const selectIds = ['assessmentYear', 'taxpayerCategory'];
-    
-    let taxChart;
 
     function formatToRupee(num) {
         if (isNaN(num)) return '0';
@@ -319,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const newResult = calculateForRegime('new', inputs, config, category);
         
         displayResults(oldResult, newResult);
-        updateChart(oldResult.totalTax, newResult.totalTax);
         updateRecommendation(oldResult.totalTax, newResult.totalTax);
     }
 
@@ -493,21 +481,6 @@ document.addEventListener('DOMContentLoaded', function () {
             recommendationText.textContent = 'Both regimes result in the same tax liability.';
         }
     }
-
-    function initChart() {
-        const ctx = document.getElementById('taxComparisonChart').getContext('2d');
-        taxChart = new Chart(ctx, {
-            type: 'bar',
-            data: { labels: ['Old Regime', 'New Regime'], datasets: [{ label: 'Total Tax Liability', data: [0, 0], backgroundColor: [ 'rgba(59, 130, 246, 0.7)', 'rgba(34, 197, 94, 0.7)' ], borderColor: [ 'rgba(59, 130, 246, 1)', 'rgba(34, 197, 94, 1)' ], borderWidth: 1 }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return '₹' + formatToRupee(value); } } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.y !== null) { label += '₹' + formatToRupee(context.parsed.y); } return label; } } } } }
-        });
-    }
-
-    function updateChart(oldTax, newTax) {
-        taxChart.data.datasets[0].data[0] = oldTax;
-        taxChart.data.datasets[0].data[1] = newTax;
-        taxChart.update();
-    }
     
     function resetForm() {
         document.getElementById('tax-form').reset();
@@ -544,7 +517,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('reset-btn').addEventListener('click', resetForm);
     document.getElementById('print-btn').addEventListener('click', () => window.print());
 
-    initChart();
     calculateTax();
 });
 </script>
