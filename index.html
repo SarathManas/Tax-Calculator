@@ -233,6 +233,23 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Taxes Paid -->
+                        <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button type="button" class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-slate-800 bg-slate-50 hover:bg-slate-100" aria-expanded="false">
+                                <span>(vii) Taxes Paid & Filing Details</span>
+                                <span class="accordion-icon text-blue-600 text-2xl font-light">+</span>
+                            </button>
+                            <div class="accordion-content max-h-0 overflow-hidden bg-white rounded-b-lg">
+                               <div class="p-4 pt-2 space-y-4 border-t border-slate-200">
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">TDS / TCS</label><input type="text" id="tds" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">Advance Tax (by 15 June)</label><input type="text" id="advTax1" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">Advance Tax (by 15 Sep)</label><input type="text" id="advTax2" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">Advance Tax (by 15 Dec)</label><input type="text" id="advTax3" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">Advance Tax (by 15 Mar)</label><input type="text" id="advTax4" class="tax-input mt-1 block w-full rounded-md shadow-sm" placeholder="0"></div>
+                                     <div><label class="block text-sm font-medium text-slate-700 mb-1">Date of Filing Return</label><input type="date" id="filingDate" class="tax-input mt-1 block w-full rounded-md shadow-sm"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -373,6 +390,23 @@
                                 <td id="old-total-tax" class="px-6 py-4 text-right font-bold text-slate-900 text-base font-mono">0</td>
                                 <td id="new-total-tax" class="px-6 py-4 text-right font-bold text-slate-900 text-base font-mono rounded-r-lg">0</td>
                             </tr>
+                            <tr class="bg-white border-b border-slate-200"><td class="px-6 py-3">Less: Taxes Paid (TDS + Adv Tax)</td><td id="old-taxes-paid" class="px-6 py-3 text-right font-mono">0</td><td id="new-taxes-paid" class="px-6 py-3 text-right font-mono">0</td></tr>
+                            <tr class="bg-white toggle-row border-b border-slate-200" data-toggle="interest-breakup">
+                                <td class="px-6 py-3 font-semibold flex items-center">
+                                    <span class="toggle-icon mr-3 text-blue-500 font-bold text-lg">+</span>
+                                    <span>Add: Interest u/s 234A,B,C</span>
+                                </td>
+                                <td id="old-interest" class="px-6 py-3 text-right font-mono font-semibold">0</td>
+                                <td id="new-interest" class="px-6 py-3 text-right font-mono font-semibold">0</td>
+                            </tr>
+                            <tr class="breakup-row interest-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Interest u/s 234A</td><td id="old-interest-234a" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-interest-234a" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="breakup-row interest-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Interest u/s 234B</td><td id="old-interest-234b" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-interest-234b" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="breakup-row interest-breakup hidden"><td class="pl-14 pr-6 py-2 text-slate-500">Interest u/s 234C</td><td id="old-interest-234c" class="px-6 py-2 text-right font-mono text-slate-500">0</td><td id="new-interest-234c" class="px-6 py-2 text-right font-mono text-slate-500">0</td></tr>
+                            <tr class="bg-slate-100">
+                                <th scope="row" class="px-6 py-4 font-bold text-slate-900 text-base rounded-l-lg">Net Payable / (Refundable)</th>
+                                <td id="old-net-payable" class="px-6 py-4 text-right font-bold text-slate-900 text-base font-mono">0</td>
+                                <td id="new-net-payable" class="px-6 py-4 text-right font-bold text-slate-900 text-base font-mono rounded-r-lg">0</td>
+                            </tr>
                         </tfoot>
                     </table>
                  </div>
@@ -407,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    const inputIds = [ 'grossSalary', 'hraExemption', 'ltaExemption', 'otherAllowances', 'hpInterestSelfOccupied', 'hpGrossAnnualValue', 'hpPropertyTax', 'hpInterestLetOut', 'pgbpNetProfit', 'turnoverBank', 'turnoverCash', 'grossReceipts44ada', 'lightVehiclesCount', 'lightVehiclesMonths', 'heavyVehiclesCount', 'heavyVehiclesMonths', 'stcg111a', 'stcgOther', 'ltcg20', 'ltcg112a', 'savingsInterest', 'depositsInterest', 'otherIncome', 'deduction80c', 'deduction80ccd', 'deduction80ccd2', 'deduction80d', 'deduction80e', 'deduction80g' ];
+    const inputIds = [ 'grossSalary', 'hraExemption', 'ltaExemption', 'otherAllowances', 'hpInterestSelfOccupied', 'hpGrossAnnualValue', 'hpPropertyTax', 'hpInterestLetOut', 'pgbpNetProfit', 'turnoverBank', 'turnoverCash', 'grossReceipts44ada', 'lightVehiclesCount', 'lightVehiclesMonths', 'heavyVehiclesCount', 'heavyVehiclesMonths', 'stcg111a', 'stcgOther', 'ltcg20', 'ltcg112a', 'savingsInterest', 'depositsInterest', 'otherIncome', 'deduction80c', 'deduction80ccd', 'deduction80ccd2', 'deduction80d', 'deduction80e', 'deduction80g', 'tds', 'advTax1', 'advTax2', 'advTax3', 'advTax4' ];
     const selectIds = ['assessmentYear', 'taxpayerCategory', 'hpType', 'presumptiveSection'];
     const checkboxIds = ['isPresumptive'];
 
@@ -496,6 +530,60 @@ document.addEventListener('DOMContentLoaded', function () {
         return details;
     }
 
+    function calculateInterest(totalTax, inputs) {
+        let interest234A = 0, interest234B = 0, interest234C = 0;
+        const tds = inputs.tds;
+        const advTaxPaid = inputs.advTax1 + inputs.advTax2 + inputs.advTax3 + inputs.advTax4;
+        const assessedTax = totalTax - tds;
+
+        // 234A: Delay in filing
+        const filingDateVal = document.getElementById('filingDate').value;
+        if (filingDateVal) {
+            const filingDate = new Date(filingDateVal);
+            const dueDate = new Date('2025-07-31');
+            if (filingDate > dueDate) {
+                const months = (filingDate.getFullYear() - dueDate.getFullYear()) * 12 + (filingDate.getMonth() - dueDate.getMonth()) + 1;
+                interest234A = Math.max(0, assessedTax - advTaxPaid) * 0.01 * months;
+            }
+        }
+
+        // 234B: Shortfall in Advance Tax
+        if (advTaxPaid < assessedTax * 0.9) {
+            const months = 12; // Simplified: April to March
+            interest234B = Math.max(0, assessedTax - advTaxPaid) * 0.01 * months;
+        }
+
+        // 234C: Deferment of Advance Tax
+        const installments = [
+            { due: 0.15, paid: inputs.advTax1 },
+            { due: 0.45, paid: inputs.advTax1 + inputs.advTax2 },
+            { due: 0.75, paid: inputs.advTax1 + inputs.advTax2 + inputs.advTax3 },
+            { due: 1.00, paid: advTaxPaid },
+        ];
+        
+        if (assessedTax > 10000) {
+            let shortfall = 0;
+            if (installments[0].paid < assessedTax * installments[0].due) {
+                shortfall = assessedTax * installments[0].due - installments[0].paid;
+                interest234C += shortfall * 0.01 * 3;
+            }
+            if (installments[1].paid < assessedTax * installments[1].due) {
+                shortfall = assessedTax * installments[1].due - installments[1].paid;
+                interest234C += shortfall * 0.01 * 3;
+            }
+            if (installments[2].paid < assessedTax * installments[2].due) {
+                shortfall = assessedTax * installments[2].due - installments[2].paid;
+                interest234C += shortfall * 0.01 * 3;
+            }
+            if (installments[3].paid < assessedTax * installments[3].due) {
+                shortfall = assessedTax * installments[3].due - installments[3].paid;
+                interest234C += shortfall * 0.01 * 1;
+            }
+        }
+
+        return { interest234A, interest234B, interest234C, total: interest234A + interest234B + interest234C };
+    }
+
     function calculateForRegime(regime, inputs, config, category) {
         const regimeConfig = regime === 'old' ? config.oldRegime : config.newRegime;
         const stdDed = inputs.grossSalary > 0 ? regimeConfig.standardDeduction : 0;
@@ -545,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let nti = gti - deductionDetails.final;
 
         if (nti <= regimeConfig.rebateLimit) {
-            return { salaryDetails, hpDetails, pgbpDetails, cgDetails, osDetails, gti, deductionDetails, nti, taxDetails: { onNormal: 0, onSpecial: 0, final: 0 }, surcharge: 0, cess: 0, totalTax: 0 };
+            return { salaryDetails, hpDetails, pgbpDetails, cgDetails, osDetails, gti, deductionDetails, nti, taxDetails: { onNormal: 0, onSpecial: 0, final: 0 }, surcharge: 0, cess: 0, totalTax: 0, interestDetails: { interest234A: 0, interest234B: 0, interest234C: 0, total: 0 }, taxesPaid: inputs.tds + inputs.advTax1 + inputs.advTax2 + inputs.advTax3 + inputs.advTax4 };
         }
 
         let taxOnSpecialRates = (inputs.stcg111a * 0.15) + (inputs.ltcg20 * 0.20) + (Math.max(0, inputs.ltcg112a - 100000) * 0.10);
@@ -584,7 +672,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const cess = taxBeforeCess * config.cess;
         const totalTax = taxBeforeCess + cess;
         
-        return { salaryDetails, hpDetails, pgbpDetails, cgDetails, osDetails, gti, deductionDetails, nti, taxDetails, surcharge, cess, totalTax };
+        const interestDetails = calculateInterest(totalTax, inputs);
+        const taxesPaid = inputs.tds + inputs.advTax1 + inputs.advTax2 + inputs.advTax3 + inputs.advTax4;
+        
+        return { salaryDetails, hpDetails, pgbpDetails, cgDetails, osDetails, gti, deductionDetails, nti, taxDetails, surcharge, cess, totalTax, interestDetails, taxesPaid };
     }
 
     function calculateTaxForSlab(income, regime, config, category) {
@@ -699,6 +790,20 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('new-cess').textContent = formatToRupee(newRes.cess);
         document.getElementById('old-total-tax').textContent = formatToRupee(oldRes.totalTax);
         document.getElementById('new-total-tax').textContent = formatToRupee(newRes.totalTax);
+
+        // Final Payable
+        document.getElementById('old-taxes-paid').textContent = formatToRupee(oldRes.taxesPaid);
+        document.getElementById('new-taxes-paid').textContent = formatToRupee(newRes.taxesPaid);
+        document.getElementById('old-interest').textContent = formatToRupee(oldRes.interestDetails.total);
+        document.getElementById('new-interest').textContent = formatToRupee(newRes.interestDetails.total);
+        document.getElementById('old-interest-234a').textContent = formatToRupee(oldRes.interestDetails.interest234A);
+        document.getElementById('new-interest-234a').textContent = formatToRupee(newRes.interestDetails.interest234A);
+        document.getElementById('old-interest-234b').textContent = formatToRupee(oldRes.interestDetails.interest234B);
+        document.getElementById('new-interest-234b').textContent = formatToRupee(newRes.interestDetails.interest234B);
+        document.getElementById('old-interest-234c').textContent = formatToRupee(oldRes.interestDetails.interest234C);
+        document.getElementById('new-interest-234c').textContent = formatToRupee(newRes.interestDetails.interest234C);
+        document.getElementById('old-net-payable').textContent = formatToRupee(oldRes.totalTax - oldRes.taxesPaid + oldRes.interestDetails.total);
+        document.getElementById('new-net-payable').textContent = formatToRupee(newRes.totalTax - newRes.taxesPaid + newRes.interestDetails.total);
     }
     
     function updateRecommendation(oldTax, newTax) {
@@ -810,6 +915,7 @@ document.addEventListener('DOMContentLoaded', function () {
     inputIds.forEach(id => { const el = document.getElementById(id); if(el) { el.addEventListener('keyup', calculateTax); el.addEventListener('keyup', formatInputOnKeyup); } });
     selectIds.forEach(id => document.getElementById(id).addEventListener('change', calculateTax));
     checkboxIds.forEach(id => document.getElementById(id).addEventListener('change', calculateTax));
+    document.getElementById('filingDate').addEventListener('change', calculateTax);
     
     document.getElementById('hpType').addEventListener('change', toggleHpInputs);
     document.getElementById('isPresumptive').addEventListener('change', togglePgbpInputs);
